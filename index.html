@@ -182,38 +182,38 @@
         }  
 
         function displayData(data) {  
-            const tableBody = document.getElementById('tableBody');  
-            tableBody.innerHTML = '';  
+    const tableBody = document.getElementById('tableBody');  
+    tableBody.innerHTML = '';  
 
-            if (data.length === 0) {  
-                tableBody.innerHTML = `  
-                    <tr>  
-                        <td colspan="9" class="text-center p-4 text-gray-500">  
-                            No se encontraron resultados.  
-                        </td>  
-                    </tr>  
-                `;  
-                return;  
-            }  
+    if (data.length === 0) {  
+        tableBody.innerHTML = `  
+            <tr class="text-center">  
+                <td colspan="9" class="p-4 text-gray-500">  
+                    <span class="italic">No se encontraron resultados que coincidan con los filtros aplicados.</span>  
+                </td>  
+            </tr>  
+        `;  
+        return;  
+    }  
 
-            data.forEach(item => {  
-                const rowClass = item.plan === 'UNIVERSAL' ? 'universal' : item.plan === 'SUPERADOR' ? 'superador' : '';  
-                const row = `  
-                    <tr class="${rowClass}">  
-                        <td class="border p-2">${item.nroPrestador || 'N/A'}</td>  
-                        <td class="border p-2">${item.prestador || 'N/A'}</td>  
-                        <td class="border p-2">${item.plan || 'N/A'}</td>  
-                        <td class="border p-2">${item.tipo || 'N/A'}</td>  
-                        <td class="border p-2">${item.especialidad || 'N/A'}</td>  
-                        <td class="border p-2">${item.seccional || 'N/A'}</td>  
-                        <td class="border p-2">${item.localidad || 'N/A'}</td>  
-                        <td class="border p-2">${item.domicilioWeb || 'N/A'}</td>  
-                        <td class="border p-2">${item.telefonoWeb || 'N/A'}</td>  
-                    </tr>  
-                `;  
-                tableBody.insertAdjacentHTML('beforeend', row);  
-            });  
-        }  
+    data.forEach(item => {  
+        const rowClass = item.plan === 'UNIVERSAL' ? 'universal' : item.plan === 'SUPERADOR' ? 'superador' : '';  
+        const row = `  
+            <tr class="${rowClass}">  
+                <td class="border p-2">${item.nroPrestador || 'N/A'}</td>  
+                <td class="border p-2">${item.prestador || 'N/A'}</td>  
+                <td class="border p-2">${item.plan || 'N/A'}</td>  
+                <td class="border p-2">${item.tipo || 'N/A'}</td>  
+                <td class="border p-2">${item.especialidad || 'N/A'}</td>  
+                <td class="border p-2">${item.seccional || 'N/A'}</td>  
+                <td class="border p-2">${item.localidad || 'N/A'}</td>  
+                <td class="border p-2">${item.domicilioWeb || 'N/A'}</td>  
+                <td class="border p-2">${item.telefonoWeb || 'N/A'}</td>  
+            </tr>  
+        `;  
+        tableBody.insertAdjacentHTML('beforeend', row);  
+    });  
+}    
 
         function updateEspecialidades() {  
             const tipo = document.getElementById('tipo').value;  

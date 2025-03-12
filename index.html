@@ -203,45 +203,59 @@
         }  
 
         function populateSpecialtyDashboard() {  
-            const uniqueSeccionals = [...new Set(prestadores.map(p => p.seccional))];  
-            const menuSeccionales = document.getElementById('menuSeccionales');  
-            menuSeccionales.innerHTML = '';  
-          
-            uniqueSeccionals.forEach(seccional => {  
-                const seccionalDiv = document.createElement('div');  
-                seccionalDiv.className = 'font-bold';  
-                seccionalDiv.textContent = seccional;  
-                
-                const typeMenu = document.createElement('div');  
-                typeMenu.className = 'pl-4';  
-                
-                Object.keys(especialidadesPorTipo).forEach(tipo => {  
-                    const tipoDiv = document.createElement('div');  
-                    tipoDiv.className = 'font-semibold cursor-pointer';  
-                    tipoDiv.textContent = tipo;  
+    const uniqueSeccionals = Array.from(new Set(prestadores.map(p => p.seccional)));  
+    const allSeccionales = [  
+        "CAPITAL", "GBA OESTE", "GBA NOROESTE", "GBA NORTE", "GBA SUR",  
+        "BAHIA BLANCA", "CATAMARCA", "CHACO", "CHUBUT", "CORDOBA",  
+        "CORRIENTES", "ENTRE RIOS", "FORMOSA", "JUJUY", "LA PAMPA",  
+        "LA PLATA", "LA RIOJA", "MAR DEL PLATA", "MISIONES", "NEUQUEN",  
+        "RIO NEGRO", "ROSARIO", "SALTA", "SAN JUAN", "SAN LUIS",  
+        "SANTA CRUZ", "SANTA FE", "SANTIAGO DEL ESTERO", "TIERRA DEL FUEGO",  
+        "TRENQUE LAUQUEN", "TUCUMAN", "ZONA 1", "ZONA 2", "ZONA 3"  
+    ];   
 
-                    const specialtyMenu = document.createElement('div');  
-                    specialtyMenu.className = 'pl-4 specialities-menu hidden'; // Escondido por defecto  
-                    
-                    tipoDiv.onclick = () => {  
-                        specialtyMenu.classList.toggle('hidden');  
-                    };  
+    const menuSeccionales = document.getElementById('menuSeccionales');  
+    menuSeccionales.innerHTML = '';  
 
-                    especialidadesPorTipo[tipo].forEach(especialidad => {  
-                        const count = new Set(prestadores.filter(p => p.seccional === seccional && p.tipo === tipo && p.especialidad === especialidad).map(p => p.nroPrestador)).size;  
-                        const especialidadDiv = document.createElement('div');  
-                        especialidadDiv.textContent = `${especialidad}: ${count}`;  
-                        specialtyMenu.appendChild(especialidadDiv);  
-                    });  
-                    
-                    tipoDiv.appendChild(specialtyMenu);  
-                    typeMenu.appendChild(tipoDiv);  
-                });  
+    allSeccionales.forEach(seccional => {  
+        const seccionalDiv = document.createElement('div');  
+        seccionalDiv.className = 'font-bold cursor-pointer';  
+        seccionalDiv.textContent = seccional;  
 
-                seccionalDiv.appendChild(typeMenu);  
-                menuSeccionales.appendChild(seccionalDiv);  
+        const typeMenu = document.createElement('div');  
+        typeMenu.className = 'pl-4 hidden';  // Escondido por defecto  
+        
+        seccionalDiv.onclick = () => {  
+            typeMenu.classList.toggle('hidden');  
+        };  
+
+        Object.keys(especialidadesPorTipo).forEach(tipo => {  
+            const tipoDiv = document.createElement('div');  
+            tipoDiv.className = 'font-semibold cursor-pointer';  
+            tipoDiv.textContent = tipo;  
+
+            const specialtyMenu = document.createElement('div');  
+            specialtyMenu.className = 'pl-4 hidden';  // Escondido por defecto  
+            
+            tipoDiv.onclick = () => {  
+                specialtyMenu.classList.toggle('hidden');  
+            };  
+
+            especialidadesPorTipo[tipo].forEach(especialidad => {  
+                const count = new Set(prestadores.filter(p => p.seccional === seccional && p.tipo === tipo && p.especialidad === especialidad).map(p => p.nroPrestador)).size;  
+                const especialidadDiv = document.createElement('div');  
+                especialidadDiv.textContent = `${especialidad}: ${count}`;  
+                specialtyMenu.appendChild(especialidadDiv);  
             });  
-        }  
+
+            tipoDiv.appendChild(specialtyMenu);  
+            typeMenu.appendChild(tipoDiv);  
+        });  
+        
+        seccionalDiv.appendChild(typeMenu);  
+        menuSeccionales.appendChild(seccionalDiv);  
+    });  
+}  
 
         function displayData(data) {  
             const tableBody = document.getElementById('tableBody');  

@@ -271,7 +271,7 @@
         function displayData(data) {  
             const tableBody = document.getElementById('tableBody');  
             tableBody.innerHTML = '';  
-
+        
             if (data.length === 0) {  
                 tableBody.innerHTML = `  
                     <tr class="text-center">  
@@ -282,6 +282,7 @@
                 `;  
                 return;  
             }  
+        
             data.forEach(item => {  
                 const rowClass = item.plan === 'UNIVERSAL' ? 'universal' : item.plan === 'SUPERADOR' ? 'superador' : '';  
                 const row = `  
@@ -320,33 +321,38 @@
             const selectedSeccional = document.getElementById('seccional').value;  
             const selectedTipo = document.getElementById('tipo').value;  
             const selectedEspecialidad = document.getElementById('especialidad').value;  
-
+        
+            // Aquí verificamos si todos los filtros están en su valor predeterminado  
+            if (!selectedPlan && !selectedSeccional && !selectedTipo && !selectedEspecialidad) {  
+                const tableBody = document.getElementById('tableBody');  
+                tableBody.innerHTML = '';  
+                return; // Termina la función sin hacer nada  
+            }  
+        
             const filteredData = prestadores.filter(item => {  
-                const planCondition =  
+                const planCondition =   
                     (selectedPlan === '' ||  
                     item.plan === selectedPlan ||  
                     (selectedPlan === 'SUPERADOR' && item.plan === 'UNIVERSAL'));  
-
+        
                 return planCondition &&  
                        (selectedSeccional === '' || item.seccional === selectedSeccional) &&  
                        (selectedTipo === '' || item.tipo === selectedTipo) &&  
                        (selectedEspecialidad === '' || item.especialidad === selectedEspecialidad);  
             });   
-
-                // Contar prestadores únicos considerando diferentes localidades  
-                const uniquePrestadoresCount = new Set(filteredData.map(item => item.nroPrestador)).size;  
-
+        
+            // Contar prestadores únicos considerando diferentes localidades  
+            const uniquePrestadoresCount = new Set(filteredData.map(item => item.nroPrestador)).size;  
+        
             // Actualiza el estado con el número de prestadores únicos  
             updateEstado(uniquePrestadoresCount);  
-
-            // Ordenar primero por PLAN y luego alfabéticamente por PRESTADOR  
             filteredData.sort((a, b) => {  
                 if (a.plan === b.plan) {  
                     return a.prestador.localeCompare(b.prestador);  
                 }  
                 return a.plan === 'UNIVERSAL' ? -1 : 1; // UNIVERSAL primero  
             });  
-
+        
             displayData(filteredData);  
         }  
 

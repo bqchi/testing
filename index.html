@@ -112,7 +112,7 @@
         <div class="w-1/3 bg-gray-50 border-l pl-4"> <!-- Contenedor para el estado -->  
             <h2 class="text-xl font-bold mb-2">Estado</h2>  
             <div id="estadoContent">  
-                <p class="italic text-gray-500">Seleccione una seccional para ver los prestadores y especialidades.</p>  
+                <p class="italic text-gray-500">Seleccione una seccional para ver la cantidad de prestadores.</p>  
             </div>  
         </div>  
     </div>  
@@ -260,8 +260,8 @@
                        (selectedEspecialidad === '' || item.especialidad === selectedEspecialidad);  
             });  
 
-            // Actualiza el estado con la información sobre los prestadores y especialidades  
-            updateEstado(selectedSeccional, filteredData);  
+            // Actualiza el estado con el número de prestadores  
+            updateEstado(filteredData.length);  
 
             // Ordenar primero por PLAN y luego alfabéticamente por PRESTADOR  
             filteredData.sort((a, b) => {  
@@ -274,21 +274,13 @@
             displayData(filteredData);  
         }  
 
-        function updateEstado(seccional, data) {  
+        function updateEstado(count) {  
             const estadoContent = document.getElementById('estadoContent');  
-            if (seccional === '') {  
-                estadoContent.innerHTML = `<p class="italic text-gray-500">Seleccione una seccional para ver los prestadores y especialidades.</p>`;  
-                return;  
+            if (count === 0) {  
+                estadoContent.innerHTML = `<p class="italic text-gray-500">No hay prestadores que coincidan con los filtros seleccionados.</p>`;  
+            } else {  
+                estadoContent.innerHTML = `<p><strong>Número de Prestadores:</strong> ${count}</p>`;  
             }  
-
-            const prestadoresList = data.map(item => item.prestador).join(', ');  
-            const specialties = [...new Set(data.map(item => item.especialidad))]; // Obtener especialidades únicas  
-            const specialitiesCount = specialties.length;  
-
-            estadoContent.innerHTML = `  
-                <p><strong>Prestadores:</strong> ${prestadoresList || 'Ninguno encontrado'}</p>  
-                <p><strong>Cantidad de Especialidades:</strong> ${specialitiesCount}</p>  
-            `;  
         }  
 
         document.getElementById('plan').addEventListener('change', filterData);  
@@ -299,4 +291,4 @@
         loadCSV();  
     </script>  
 </body>  
-</html> 
+</html>  

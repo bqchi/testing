@@ -316,18 +316,7 @@
             }  
         }  
 
-        function filterData() {  
-            const selectedPlan = document.getElementById('plan').value;  
-            const selectedSeccional = document.getElementById('seccional').value;  
-            const selectedTipo = document.getElementById('tipo').value;  
-            const selectedEspecialidad = document.getElementById('especialidad').value;  
-        
-            // Aquí verificamos si todos los filtros están en su valor predeterminado  
-            if (!selectedPlan && !selectedSeccional && !selectedTipo && !selectedEspecialidad) {  
-                const tableBody = document.getElementById('tableBody');  
-                tableBody.innerHTML = '';  
-                return; // Termina la función sin hacer nada  
-            }  
+          
         
         function filterData() {  
             const selectedPlan = document.getElementById('plan').value;  

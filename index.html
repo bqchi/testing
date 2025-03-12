@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>  
 <html lang="es">  
 <head>  
@@ -30,14 +31,14 @@
             <div class="grid grid-cols-2 gap-2 mb-4">  
                 <div>  
                     <label for="seccional" class="block mb-1">Seccional:</label>  
-                    <select id="seccional" class="w-full border-2 border-gray-200 p-1 rounded">  
+                    <select id="seccional" class="w-full border-2 border-gray-200 p-1 rounded" onchange="filterData()">  
                         <option value="">Todas</option>  
                         <!-- Seccionales de los filtros -->  
                     </select>  
                 </div>  
                 <div>  
                     <label for="plan" class="block mb-1">Plan:</label>  
-                    <select id="plan" class="w-full border-2 border-gray-200 p-1 rounded">  
+                    <select id="plan" class="w-full border-2 border-gray-200 p-1 rounded" onchange="filterData()">  
                         <option value="">Todos</option>  
                         <option value="UNIVERSAL">UNIVERSAL</option>  
                         <option value="SUPERADOR">SUPERADOR</option>  
@@ -58,7 +59,7 @@
                 </div>  
                 <div>  
                     <label for="especialidad" class="block mb-1">Especialidad:</label>  
-                    <select id="especialidad" class="w-full border-2 border-gray-200 p-1 rounded">  
+                    <select id="especialidad" class="w-full border-2 border-gray-200 p-1 rounded" onchange="filterData()">  
                         <option value="">Todas</option>  
                     </select>  
                 </div>  
@@ -95,7 +96,7 @@
 
     <script>  
         const prestadores = [];  
-
+        
         // Especialidades por tipo de prestador  
         const especialidadesPorTipo = {  
             "Centros de diagnostico y tratamiento": [  
@@ -146,26 +147,30 @@
             const csvFiles = ['prestadores1.csv', 'prestadores2.csv'];  
             
             for (const file of csvFiles) {  
-                const response = await fetch(file);  
-                const data = await response.text();  
+                try {  
+                    const response = await fetch(file);  
+                    const data = await response.text();  
 
-                const rows = data.trim().split('\n');  
-                rows.slice(1).forEach(row => {  
-                    const columns = row.split(';');  
-                    if (columns.length > 1) {  
-                        prestadores.push({  
-                            nroPrestador: columns[0],  
-                            prestador: columns[1],  
-                            plan: columns[2],  
-                            tipo: columns[3],  
-                            especialidad: columns[4],  
-                            seccional: columns[5],  
-                            localidad: columns[6],  
-                            domicilioWeb: columns[7],  
-                            telefonoWeb: columns[8]  
-                        });  
-                    }  
-                });  
+                    const rows = data.trim().split('\n');  
+                    rows.slice(1).forEach(row => {  
+                        const columns = row.split(';');  
+                        if (columns.length > 1) {  
+                            prestadores.push({  
+                                nroPrestador: columns[0],  
+                                prestador: columns[1],  
+                                plan: columns[2],  
+                                tipo: columns[3],  
+                                especialidad: columns[4],  
+                                seccional: columns[5],  
+                                localidad: columns[6],  
+                                domicilioWeb: columns[7],  
+                                telefonoWeb: columns[8]  
+                            });  
+                        }  
+                    });  
+                } catch (error) {  
+                    console.error(`Error loading CSV file: ${file}`, error);  
+                }  
             }  
             displayData(prestadores);  
             populateSpecialtyDashboard(); // Llenar el panel de especialidades  
@@ -178,37 +183,32 @@
           
             uniqueSeccionals.forEach(seccional => {  
                 const seccionalDiv = document.createElement('div');  
-                const seccionalTitle = document.createElement('div');  
-                seccionalTitle.textContent = seccional;  
-                seccionalTitle.className = 'font-bold cursor-pointer';  
-                seccionalTitle.onclick = () => {  
-                    const typeMenu = seccionalDiv.querySelector('.tipo-menu');  
-                    typeMenu.classList.toggle('hidden');  
-                };  
-                seccionalDiv.appendChild(seccionalTitle);  
-
+                seccionalDiv.className = 'font-bold';  
+                seccionalDiv.textContent = seccional;  
+                
                 const typeMenu = document.createElement('div');  
-                typeMenu.className = 'tipo-menu hidden pl-4';  
+                typeMenu.className = 'pl-4';  
+                
                 Object.keys(especialidadesPorTipo).forEach(tipo => {  
                     const tipoDiv = document.createElement('div');  
-                    tipoDiv.className = 'font-semibold cursor-pointer';  
+                    tipoDiv.className = 'font-semibold';  
                     tipoDiv.textContent = tipo;  
-                    tipoDiv.onclick = () => {  
-                        const specialtyMenu = tipoDiv.nextElementSibling;  
-                        specialtyMenu.classList.toggle('hidden');  
-                    };  
-                    seccionalDiv.appendChild(tipoDiv);  
 
                     const specialtyMenu = document.createElement('div');  
-                    specialtyMenu.className = 'hidden pl-4 specialities-menu';  
+                    specialtyMenu.className = 'pl-4 specialities-menu';  
+                    
                     especialidadesPorTipo[tipo].forEach(especialidad => {  
                         const count = prestadores.filter(p => p.seccional === seccional && p.tipo === tipo && p.especialidad === especialidad).length;  
                         const especialidadDiv = document.createElement('div');  
                         especialidadDiv.textContent = `${especialidad}: ${count}`;  
                         specialtyMenu.appendChild(especialidadDiv);  
                     });  
+                    
                     tipoDiv.appendChild(specialtyMenu);  
+                    typeMenu.appendChild(tipoDiv);  
                 });  
+
+                seccionalDiv.appendChild(typeMenu);  
                 menuSeccionales.appendChild(seccionalDiv);  
             });  
         }  
@@ -309,4 +309,4 @@
         loadCSV();  
     </script>  
 </body>  
-</html> 
+</html>  

@@ -320,10 +320,13 @@
                        (selectedSeccional === '' || item.seccional === selectedSeccional) &&  
                        (selectedTipo === '' || item.tipo === selectedTipo) &&  
                        (selectedEspecialidad === '' || item.especialidad === selectedEspecialidad);  
-            });  
+            });   
 
-            // Actualiza el estado con el número de prestadores  
-            updateEstado(filteredData.length);  
+                // Contar prestadores únicos considerando diferentes localidades  
+                const uniquePrestadoresCount = new Set(filteredData.map(item => item.nroPrestador)).size;  
+
+            // Actualiza el estado con el número de prestadores únicos  
+            updateEstado(uniquePrestadoresCount);  
 
             // Ordenar primero por PLAN y luego alfabéticamente por PRESTADOR  
             filteredData.sort((a, b) => {  

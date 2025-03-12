@@ -329,6 +329,23 @@
                 return; // Termina la función sin hacer nada  
             }  
         
+        function filterData() {  
+            const selectedPlan = document.getElementById('plan').value;  
+            const selectedSeccional = document.getElementById('seccional').value;  
+            const selectedTipo = document.getElementById('tipo').value;  
+            const selectedEspecialidad = document.getElementById('especialidad').value;  
+        
+            // Verificar si todos los filtros están en sus valores predeterminados  
+            if (selectedSeccional === '' && selectedPlan === '' && selectedTipo === '' && selectedEspecialidad === '') {  
+                const tableBody = document.getElementById('tableBody');  
+                tableBody.innerHTML = `<tr class="text-center">  
+                    <td colspan="8" class="p-4 text-gray-500">  
+                        <span class="italic">Seleccione algún filtro para ver resultados.</span>  
+                    </td>  
+                </tr>`;  
+                return; // Salir de la función  
+            }  
+        
             const filteredData = prestadores.filter(item => {  
                 const planCondition =   
                     (selectedPlan === '' ||  
@@ -346,6 +363,8 @@
         
             // Actualiza el estado con el número de prestadores únicos  
             updateEstado(uniquePrestadoresCount);  
+        
+            // Ordenar primero por PLAN y luego alfabéticamente por PRESTADOR  
             filteredData.sort((a, b) => {  
                 if (a.plan === b.plan) {  
                     return a.prestador.localeCompare(b.prestador);  

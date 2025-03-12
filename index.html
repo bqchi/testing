@@ -11,6 +11,17 @@
         .universal { background-color: #d4f8d4; } /* Verde claro */  
         .superador { background-color: #f8d4d4; } /* Rojo claro */  
         .hidden { display: none; } /* Para ocultar elementos */  
+    
+        /* Nueva sección de estilos para ajustar la tabla */  
+        table {  
+            border-collapse: collapse; /* Asegúrate de que no haya espacio entre celdas */  
+        }  
+        td, th {  
+            padding: 4px 8px; /* Reduce el padding */  
+            font-size: 12px; /* Ajuste de tamaño de fuente */  
+            line-height: 1.2; /* Ajuste de altura de línea */  
+            height: auto; /* Altura automática */  
+        }  
     </style>  
 </head>  
 <body class="bg-gray-100">  
@@ -103,14 +114,14 @@
             <table id="prestadoresTable" class="table-auto w-full border-collapse border">  
                 <thead>  
                     <tr class="bg-gray-200">  
-                        <th class="border p-2">NroPrestador</th>  
-                        <th class="border p-2">NOMBRE COMPLETO DEL PRESTADOR</th>  
-                        <th class="border p-2">Plan</th>  
+                        <th class="border p-1">NroPrestador</th>  
+                        <th class="border p-1">NOMBRE COMPLETO DEL PRESTADOR</th>  
+                        <th class="border p-1">Plan</th>  
                         <th class="border p-2">TIPO DE PRESTADOR</th>  
-                        <th class="border p-2">ESPECIALIDAD</th>  
-                        <th class="border p-2">LOCALIDAD</th>  
-                        <th class="border p-2">Domicilio Web</th>  
-                        <th class="border p-2">Telefono Web</th>  
+                        <th class="border p-1">ESPECIALIDAD</th>  
+                        <th class="border p-1">LOCALIDAD</th>  
+                        <th class="border p-1">Domicilio Web</th>  
+                        <th class="border p-1">Telefono Web</th>  
                     </tr>  
                 </thead>  
                 <tbody id="tableBody">  
